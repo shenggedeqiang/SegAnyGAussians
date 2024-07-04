@@ -43,14 +43,14 @@ def render_set(model_path, name, iteration, views, gaussians, pipeline, backgrou
 
         res = render_func(view, gaussians, pipeline, background)
 
-        if target == 'seg':
+        if target == 'scene':
             assert precomputed_mask is not None and 'Rendering 2D segmentation mask requires a precomputed mask.'
             mask_res = render_mask(view, gaussians, pipeline, background, precomputed_mask=precomputed_mask)
 
         rendering = res["render"]
         gt = view.original_image[0:3, :, :]
         torchvision.utils.save_image(gt, os.path.join(gts_path, '{0:05d}'.format(idx) + ".png"))
-        if target == 'seg':
+        if target == 'scene':
             mask = mask_res["mask"]
             mask[mask < 0.5] = 0
             mask[mask != 0] = 1
